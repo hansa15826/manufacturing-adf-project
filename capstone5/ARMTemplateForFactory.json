@@ -11,9 +11,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'ls_AzureDatabricks'"
 		},
+		"ls_AzureDatabricksR_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_AzureDatabricksR'"
+		},
 		"ls_AzureDataLakeStorage_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://capstone05.dfs.core.windows.net"
+		},
+		"ls_AzureDatabricksR_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0521-091753-vk41t6si"
 		},
 		"ls_AzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
@@ -156,6 +164,43 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "transform_silver_layer",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "copy_supplier_master",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/updazvmnag_1777788721004@npupgradassessment.onmicrosoft.com/02_Silver_Data_Cleaning (5)",
+							"baseParameters": {
+								"df_run_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								},
+								"df_pipeline_name": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_AzureDatabricksR",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"policy": {
@@ -167,7 +212,8 @@
 				"[concat(variables('factoryId'), '/datasets/ds_SqlServer_MachineMaster')]",
 				"[concat(variables('factoryId'), '/datasets/ds_Adls_MachineMaster')]",
 				"[concat(variables('factoryId'), '/datasets/ds_SqlServer_SupplierMaster')]",
-				"[concat(variables('factoryId'), '/datasets/ds_Adls_SupplierMaster')]"
+				"[concat(variables('factoryId'), '/datasets/ds_Adls_SupplierMaster')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_AzureDatabricksR')]"
 			]
 		},
 		{
@@ -352,6 +398,42 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ls_AzureDatabricks')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricksDeltaLake",
+				"typeProperties": {
+					"domain": "https://adb-7405614439769553.13.azuredatabricks.net",
+					"clusterId": "0521-091753-vk41t6si",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('ls_AzureDatabricks_accessToken')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_AzureDatabricksR')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-7405614439769553.13.azuredatabricks.net/",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('ls_AzureDatabricksR_accessToken')]"
+					},
+					"existingClusterId": "[parameters('ls_AzureDatabricksR_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ls_AzureKeyVault')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -391,24 +473,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_AzureKeyVault')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_AzureDatabricks')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureDatabricksDeltaLake",
-				"typeProperties": {
-					"domain": "https://adb-7405614439769553.13.azuredatabricks.net",
-					"clusterId": "0521-091753-vk41t6si",
-					"accessToken": {
-						"type": "SecureString",
-						"value": "[parameters('ls_AzureDatabricks_accessToken')]"
-					}
-				}
-			},
-			"dependsOn": []
 		}
 	]
 }

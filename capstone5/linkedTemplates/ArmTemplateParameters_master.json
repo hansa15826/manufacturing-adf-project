@@ -8,8 +8,14 @@
 		"ls_AzureDatabricks_accessToken": {
 			"value": ""
 		},
+		"ls_AzureDatabricksR_accessToken": {
+			"value": ""
+		},
 		"ls_AzureDataLakeStorage_properties_typeProperties_url": {
 			"value": "https://capstone05.dfs.core.windows.net"
+		},
+		"ls_AzureDatabricksR_properties_typeProperties_existingClusterId": {
+			"value": "0521-091753-vk41t6si"
 		},
 		"ls_AzureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://capstone05key.vault.azure.net/"
