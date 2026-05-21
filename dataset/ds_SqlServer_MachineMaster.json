@@ -1,0 +1,47 @@
+{
+	"name": "ds_SqlServer_MachineMaster",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureSQLDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "machine_id",
+				"type": "varchar"
+			},
+			{
+				"name": "machine_name",
+				"type": "varchar"
+			},
+			{
+				"name": "plant",
+				"type": "varchar"
+			},
+			{
+				"name": "machine_type",
+				"type": "varchar"
+			},
+			{
+				"name": "install_date",
+				"type": "date"
+			},
+			{
+				"name": "machine_status",
+				"type": "varchar"
+			},
+			{
+				"name": "last_updated",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "machine_master"
+		}
+	}
+}
