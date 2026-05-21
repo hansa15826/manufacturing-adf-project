@@ -1,6 +1,5 @@
 {
 	"name": "ls_AzureDataLakeStorage",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureBlobFS",
@@ -15,5 +14,6 @@
 				"secretName": "StorageAccountConnectionString"
 			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
