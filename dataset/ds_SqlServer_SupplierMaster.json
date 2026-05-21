@@ -1,0 +1,43 @@
+{
+	"name": "ds_SqlServer_SupplierMaster",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureSQLDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "supplier_id",
+				"type": "varchar"
+			},
+			{
+				"name": "supplier_name",
+				"type": "varchar"
+			},
+			{
+				"name": "city",
+				"type": "varchar"
+			},
+			{
+				"name": "supplier_rating",
+				"type": "varchar"
+			},
+			{
+				"name": "contract_status",
+				"type": "varchar"
+			},
+			{
+				"name": "last_updated",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "supplier_master"
+		}
+	}
+}
