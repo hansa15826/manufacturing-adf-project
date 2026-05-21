@@ -159,7 +159,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": "machine_master.csv",
-						"folderPath": "bronze",
+						"folderPath": "raw/machine_master",
 						"fileSystem": "manufacturing-lakehouse"
 					},
 					"columnDelimiter": ",",
@@ -188,7 +188,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": "supplier_master.csv",
-						"folderPath": "bronze",
+						"folderPath": "raw/supplier_master",
 						"fileSystem": "manufacturing-lakehouse"
 					},
 					"columnDelimiter": ",",
