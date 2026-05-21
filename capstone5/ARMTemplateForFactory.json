@@ -91,6 +91,67 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "copy_supplier_master",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "copy_machine_master",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_SqlServer_SupplierMaster",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_Adls_SupplierMaster",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -100,7 +161,9 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_SqlServer_MachineMaster')]",
-				"[concat(variables('factoryId'), '/datasets/ds_Adls_MachineMaster')]"
+				"[concat(variables('factoryId'), '/datasets/ds_Adls_MachineMaster')]",
+				"[concat(variables('factoryId'), '/datasets/ds_SqlServer_SupplierMaster')]",
+				"[concat(variables('factoryId'), '/datasets/ds_Adls_SupplierMaster')]"
 			]
 		},
 		{
@@ -118,6 +181,35 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": "machine_master.csv",
+						"folderPath": "bronze",
+						"fileSystem": "manufacturing-lakehouse"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_AzureDataLakeStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_Adls_SupplierMaster')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_AzureDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "supplier_master.csv",
 						"folderPath": "bronze",
 						"fileSystem": "manufacturing-lakehouse"
 					},
@@ -178,6 +270,54 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "machine_master"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_AzureSQLDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_SqlServer_SupplierMaster')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_AzureSQLDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "supplier_id",
+						"type": "varchar"
+					},
+					{
+						"name": "supplier_name",
+						"type": "varchar"
+					},
+					{
+						"name": "city",
+						"type": "varchar"
+					},
+					{
+						"name": "supplier_rating",
+						"type": "varchar"
+					},
+					{
+						"name": "contract_status",
+						"type": "varchar"
+					},
+					{
+						"name": "last_updated",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "supplier_master"
 				}
 			},
 			"dependsOn": [
