@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "capstone5"
 		},
+		"ls_AzureDatabricks_accessToken": {
+			"value": ""
+		},
 		"ls_AzureDataLakeStorage_properties_typeProperties_url": {
 			"value": "https://capstone05.dfs.core.windows.net"
 		},

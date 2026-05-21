@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "capstone5"
 		},
+		"ls_AzureDatabricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_AzureDatabricks'"
+		},
 		"ls_AzureDataLakeStorage_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://capstone05.dfs.core.windows.net"
@@ -53,6 +57,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ls_AzureDatabricks_accessToken": {
+						"value": "[parameters('ls_AzureDatabricks_accessToken')]"
 					},
 					"ls_AzureKeyVault_properties_typeProperties_baseUrl": {
 						"value": "[parameters('ls_AzureKeyVault_properties_typeProperties_baseUrl')]"
