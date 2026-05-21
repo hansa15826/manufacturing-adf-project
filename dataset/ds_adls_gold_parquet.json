@@ -1,0 +1,57 @@
+{
+	"name": "ds_adls_gold_parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureDataLakeStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"folder_path": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "@dataset().folder_path",
+					"type": "Expression"
+				},
+				"fileSystem": "manufacturing-lakehouse"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "notebook_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "records_read",
+				"type": "INT64"
+			},
+			{
+				"name": "records_rejected",
+				"type": "INT64"
+			},
+			{
+				"name": "records_inserted",
+				"type": "INT64"
+			},
+			{
+				"name": "status",
+				"type": "UTF8"
+			},
+			{
+				"name": "run_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "run_timestamp",
+				"type": "INT96"
+			}
+		]
+	}
+}
