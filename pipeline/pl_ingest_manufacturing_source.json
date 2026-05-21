@@ -112,6 +112,37 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "transform_silver_layer",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "copy_supplier_master",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/updazvmnag_1777788721004@npupgradassessment.onmicrosoft.com/02_Silver_Data_Cleaning (5)",
+					"baseParameters": {
+						"df_run_id": "@pipeline().RunId",
+						"df_pipeline_name": "@pipeline().Pipeline"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_AzureDatabricksR",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": []
