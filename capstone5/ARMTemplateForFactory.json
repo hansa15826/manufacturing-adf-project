@@ -201,6 +201,87 @@
 							"referenceName": "ls_AzureDatabricksR",
 							"type": "LinkedServiceReference"
 						}
+					},
+					{
+						"name": "generate_gold_supplier_dim",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "transform_silver_layer",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/updazvmnag_1777788721004@npupgradassessment.onmicrosoft.com/02_Participant_3_Analytics_Eng/01_Supplier_SCD_Type_2"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_AzureDatabricksR",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "optimize_delta_tables",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "compile_gold_analytics",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/updazvmnag_1777788721004@npupgradassessment.onmicrosoft.com/02_Participant_3_Analytics_Eng/03_Delta_Table_Operations"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_AzureDatabricksR",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "compile_gold_analytics",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "generate_gold_supplier_dim",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/updazvmnag_1777788721004@npupgradassessment.onmicrosoft.com/02_Participant_3_Analytics_Eng/02_Gold_Analytics_Tables"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_AzureDatabricksR",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"policy": {
